@@ -24,9 +24,7 @@ export const setCurrentFragments = fragments => {
 
 export const getCurrentStory = () => async dispatch => {
   try {
-    console.log('AM I HERE')
     const {data} = await axios.get(`http://192.168.1.158:8080/api/story/current`)
-    console.log("IAMDATA ", data)
     dispatch(setCurrentStory(data))
   } catch (err) {
     console.error(err)
@@ -35,7 +33,7 @@ export const getCurrentStory = () => async dispatch => {
 
 export const getCurrentFragments = () => async dispatch => {
   try {
-    const {data} = await axios.get(`/api/story/active`)
+    const {data} = await axios.get(`http://192.168.1.158:8080/api/story/current/fragments`)
     dispatch(setCurrentFragments(data))
   } catch (err) {
     console.error(err)

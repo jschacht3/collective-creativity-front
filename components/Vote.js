@@ -9,6 +9,7 @@ class Vote extends React.Component {
 
   componentDidMount () {
     this.props.loadCurrentStory()
+    this.props.loadCurrentFragments()
   }
 
   render() {
@@ -18,8 +19,13 @@ class Vote extends React.Component {
       votes: 1     
     }
     const currentStory = this.props.currentStory
+    const currentFragments = this.props.currentFragments
+
     return (
-      <Text>Please vote for the next note in story {currentStory.title}!</Text>
+      <Text>
+        <Text>Please vote for the next piece of the story {currentStory.title}!</Text>
+        <Text>Here are the options: {currentFragments.map(fragment => fragment.words)}</Text>
+      </Text>
     );
   }
 }
