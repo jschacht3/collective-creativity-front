@@ -1,16 +1,26 @@
 import React from 'react'
 import { Icon } from 'expo'
-import {getCurrentStory, getCurrentFragments} from '../store/story'
-import {Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {getCurrentStory, getCurrentFragments, addVote} from '../store/story'
+import {Image, Platform, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View} from 'react-native'
 import Colors from '../constants/Colors'
 import {connect} from 'react-redux'
 import {Button, Card, Header} from 'react-native-elements'
 
 class Vote extends React.Component {
 
+  constructor() {
+    super()
+    this.handleClick = this.handleClick.bind(this)
+  }
+
   componentDidMount () {
     this.props.loadCurrentStory()
     this.props.loadCurrentFragments()
+  }
+
+  handleClick (id) {
+    console.log("AM I HERE")
+    this.props.addVote(id)
   }
 
   render() {
@@ -27,8 +37,9 @@ class Vote extends React.Component {
           <Text/>
           {currentFragments.map(fragment => 
             <View key={fragment.id}>
-             <Button title={fragment.words}/>
-             <Text/>
+              <Button type="button" title={fragment.words + ' votes: ' + fragment.votes} onPress={() => this.handleClick(fragment.id)}
+              />
+              <Text/>
             </View>
           )}
       </View>
@@ -46,7 +57,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loadCurrentStory: () => dispatch(getCurrentStory()),
-    loadCurrentFragments: () => dispatch(getCurrentFragments())
+    loadCurrentFragments: () => dispatch(getCurrentFragments()),
+    addVote: (id) => dispatch(addVote(id))
   }
 }
 

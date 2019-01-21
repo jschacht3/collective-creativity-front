@@ -2,6 +2,7 @@ import axios from 'axios'
 
 export const SET_CURRENT_STORY = 'SET_CURRENT_STORY'
 export const SET_CURRENT_FRAGMENTS = 'SET_CURRENT_FRAGMENTS'
+export const ADD_VOTE = 'ADD_VOTE'
 
 let initialState = {
   currentStory: {},
@@ -19,6 +20,13 @@ export const setCurrentFragments = fragments => {
   return {
     type: SET_CURRENT_FRAGMENTS,
     fragments
+  }
+}
+
+export const updatedVote = fragment => {
+  return {
+    type: ADD_VOTE,
+    fragment
   }
 }
 
@@ -40,6 +48,15 @@ export const getCurrentFragments = () => async dispatch => {
   }
 }
 
+export const addVote = (id) => async dispatch => {
+  try {
+    const {data} = await axios.put(`http://192.168.1.158:8080/api/story/current/fragment/${id}`)
+    dispatch(updatedVote(data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 const storyReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_CURRENT_STORY:
@@ -51,6 +68,14 @@ const storyReducer = (state = initialState, action) => {
       return {
         ...state,
         currentFragments: action.fragments
+      }
+    case ADD_VOTE:
+      return {
+        ...state,
+        currentFragments: state.currentFragments.map((elem) => {
+          if (action.fragment.id === elem.id) return action.fragment
+          else return elem
+        })
       }
     default:
       return state
