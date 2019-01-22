@@ -28,9 +28,7 @@ export default class StoryScreen extends React.Component {
         </ScrollView>
       </View>
     );
-  }
-
-  
+  } 
 }
 
 const styles = StyleSheet.create({

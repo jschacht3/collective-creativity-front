@@ -29,14 +29,17 @@ class Story extends React.Component {
     if (currentStory !== undefined && currentStoryContent !== undefined){
       let content = '';
       for (let i = 1; i < currentStoryContent.length; i++){
-        content += currentStoryContent[i].words + "  "
+        content += currentStoryContent[i].words + " "
       }
       return (
         <View>
             <Text/> 
-            <Text style={styles.getStartedText}>Below is the story so far! {'\n' + '\n'}As the voting continues, the proposed additions with the most votes will get added to the story! </Text>
+            <Text style={styles.getStartedHeader}>Below is the story so far!</Text>
+            <Text/> 
+            <Text style={styles.getStartedText}>As the voting continues, the proposed additions with the most votes will get added to the story! </Text>
             <Text/>
-            <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
+            <Text/>
+            <Text style={styles.getStartedHeader}>{currentStory.title}</Text>
             <Text/>
             <Text style={styles.getStartedText}>{content} </Text>
             <Text/>
@@ -112,6 +115,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
+    textAlign: 'left',
+  },
+  getStartedHeader: {
+    fontSize: 30,
+    color: 'rgba(96,100,109, 1)',
+    lineHeight: 34,
     textAlign: 'left',
   },
   tabBarInfoContainer: {

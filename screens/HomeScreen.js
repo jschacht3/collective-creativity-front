@@ -9,32 +9,40 @@ import {
   View,
 } from 'react-native';
 import { WebBrowser } from 'expo';
-
-import { MonoText } from '../components/StyledText';
+import {Button, Card, Header} from 'react-native-elements'
+import { MonoText } from '../components/StyledText'
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
-  component
-
   render() {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+
           <View style={styles.welcomeContainer}>
-
-          </View>
-
-          <View style={styles.getStartedContainer}>
-           
-
-            <Text style={styles.getStartedText}>
-                Welcome to collective creativity! {'\n' + '\n'} Let's all write a story together!
-                {'\n' + '\n'} Click on 'Vote' below to start voting. 
-                {'\n' + '\n'} Click on 'Story' below to see the story so far. 
-            </Text>
+              <View style={styles.welcomeContainer}>
+                <Text style={styles.getStartedHeader}>
+                    Welcome to Collective Creativity! {'\n'}  
+                </Text>
+              </View>
+              <View>
+                <Text style={styles.getStartedText}>
+                    Collective Creativity is a tool for writing a story together...with democracy!{'\n'}
+                </Text>
+              </View>
+              <View>
+                <Text style={styles.getStartedText}>
+                    Click on 'Vote' below to start voting. {'\n'}
+                </Text>
+              </View>
+              <View>
+              <Text style={styles.getStartedText}>
+                  Click on 'STORY' below to see the story so far... 
+              </Text>
+            </View>
           </View>
 
         </ScrollView>
@@ -48,7 +56,8 @@ export default class HomeScreen extends React.Component {
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(0,0,0,1)',
+    marginTop: 30
   },
   developmentModeText: {
     marginBottom: 20,
@@ -64,6 +73,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 20,
+    marginRight: 10, 
+    marginLeft: 10
   },
   welcomeImage: {
     width: 100,
@@ -88,11 +99,21 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
     paddingHorizontal: 4,
   },
-  getStartedText: {
+  getStartedHeader: {
     fontSize: 25,
-    color: 'rgba(96,100,109, 1)',
+    color: 'rgba(248,248,248,1)',
     lineHeight: 24,
     textAlign: 'center',
+    marginLeft: 10,
+    marginRight: 10
+  },
+  getStartedText: {
+    fontSize: 20,
+    color: 'rgba(248,248,248,1)',
+    lineHeight: 24,
+    textAlign: 'center',
+    marginLeft: 10,
+    marginRight: 10
   },
   tabBarInfoContainer: {
     position: 'absolute',

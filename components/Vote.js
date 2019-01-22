@@ -56,8 +56,6 @@ class Vote extends React.Component {
     const currentStory = this.props.currentStory
     const currentFragments = this.props.currentFragments
 
-    console.log("CURRENT STORY", currentStory.title)
-
     let trigger = false
     let voteLeader
     for (let i = 0; i < currentFragments.length; i++) {
@@ -82,7 +80,6 @@ class Vote extends React.Component {
             )}
         </View>
       )
-
     } else if (currentStory !== undefined && currentStory.title !== undefined && currentStory.title === null && !trigger){
       return (
         <View>
@@ -116,7 +113,7 @@ class Vote extends React.Component {
       return (
         <View>
             <Text/>
-            <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
+            <Text style={styles.getStartedHeader}>Story Title: {currentStory.title}</Text>
             <Text/>
             <Text style={styles.getStartedText}>Vote on which user-submitted words should be added to the story! {'\n'}{'\n'}Here are the options: </Text>
             <Text/>
@@ -135,7 +132,7 @@ class Vote extends React.Component {
       return (
         <View>
             <Text/>
-            <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
+            <Text style={styles.getStartedHeader}>Story Title: {currentStory.title}</Text>
             <Text/>
             <Text style={styles.getStartedText}>Please submit a proposal for the next part of the story! 
             {'\n'}{'\n'}Voting will begin once we have received four submissions.{'\n'}</Text>
@@ -231,6 +228,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
+    textAlign: 'left',
+  },
+  getStartedHeader: {
+    fontSize: 30,
+    color: 'rgba(96,100,109, 1)',
+    lineHeight: 34,
     textAlign: 'left',
   },
   tabBarInfoContainer: {
