@@ -1,6 +1,7 @@
+/* eslint-disable complexity */
 import React from 'react'
 import { Icon } from 'expo'
-import {getCurrentStory, getCurrentFragments, addVote, submitProposal} from '../store/story'
+import {getCurrentStory, getCurrentFragments, addVote, submitProposal, completeVote} from '../store/story'
 import {Image, Platform, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View, TextInput} from 'react-native'
 import Colors from '../constants/Colors'
 import {connect} from 'react-redux'
@@ -14,23 +15,37 @@ class Vote extends React.Component {
       submission: ''
     }
     this.handleVoteClick = this.handleVoteClick.bind(this)
-    this.handleProposalClick = this.handleProposalClick.bind(this)
+    this.handleProposalSubmission = this.handleProposalSubmission.bind(this)
+    this.voteWinner = this.voteWinner.bind(this)
   }
 
   async componentDidMount () {
-    this.props.loadCurrentStory()
-    this.props.loadCurrentFragments()
+    await this.props.loadCurrentFragments()
+    await this.props.loadCurrentStory()
+  }
+
+  async componentDidUpdate(prevProps) {
+    if (this.props.currentFragments.length !== prevProps.currentFragments.length) {
+      this.props.loadCurrentFragments()
+    }
   }
 
   async handleVoteClick (id) {
-    this.props.addVote(id)
+    await this.props.addVote(id)
   }
 
-  handleProposalSubmission () {
-    this.props.submitProposal(this.state.submission)
+  async handleProposalSubmission () {
+    await this.props.submitProposal(this.state)
     this.setState({
       submission: ''
     })
+    await this.props.loadCurrentFragments()
+  }
+
+  async voteWinner (id) {
+    await this.props.completeVote(id)
+    await this.props.loadCurrentFragments()
+    await this.props.loadCurrentStory()
   }
 
   render() {
@@ -38,36 +53,45 @@ class Vote extends React.Component {
     const currentStory = this.props.currentStory
     const currentFragments = this.props.currentFragments
 
-    if (currentFragments & currentFragments.length >= 10){
+    let trigger = false
+    let voteLeader
+    for (let i = 0; i < currentFragments.length; i++) {
+      if (currentFragments[i].votes >= 10){ 
+        trigger = true
+        voteLeader = currentFragments[i]
+      }
+    }
+    if (trigger) this.voteWinner(voteLeader.id)
+   
+    if (currentStory !== undefined && currentFragments.length >= 4 && !trigger) {
       return (
         <View>
             <Text/>
-            <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
-            <Text/>
-            <Text style={styles.getStartedText}>Please vote on the next part of the story! {'\n'}{'\n'}Here are the options: </Text>
+            <Text style={styles.getStartedText}>Vote on what the story's title should be! {'\n'}{'\n'}Here are the user submitted proposals: </Text>
             <Text/>
             {currentFragments.map(fragment => 
               <View key={fragment.id}>
-                <Button type="button" title={fragment.words + '\n \n Votes: ' + fragment.votes} onPress={() => this.handleVoteClick(fragment.id)}
-                />
+                <Button type="button" title={'"' + fragment.words + '"' + '\n \n Votes: ' + fragment.votes} onPress={() => this.handleVoteClick(fragment.id)}/>
                 <Text/>
               </View>
             )}
         </View>
       )
-    }
-    else {
+
+    } else if (currentStory !== undefined && currentStory.title !== undefined && currentStory.title === null && !trigger){
       return (
         <View>
             <Text/>
-            <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
+            <Text style={styles.getStartedText}>It's time to start a new story!</Text>
             <Text/>
-            <Text style={styles.getStartedText}>Please submit a proposal for the next part of the story! 
-              Voting will begin once we have received four submissions{'\n'}</Text>
+            <Text style={styles.getStartedText}>Submit a proposal for what the title should be! 
+            {'\n'}{'\n'}Voting will begin once we have received four submissions.{'\n'}</Text>
 
             <Text style={styles.getStartedText}>Submit a Proposal: </Text>
+            
             <TextInput style={{height: 40, borderColor: 'gray', borderWidth: 1}} maxLength={40}
-            onChangeText={(text) => this.setState({text})} value={this.state.text}/>
+            onChangeText={(submission) => this.setState({submission})} value={this.state.submission}/>
+            
             <Button type="button" title={'Submit'} onPress={this.handleProposalSubmission}/>
 
             <Text style={styles.getStartedText}>{'\n'}Here are the proposals submitted so far:{'\n'}</Text>
@@ -80,6 +104,57 @@ class Vote extends React.Component {
             )}
         </View>
       )
+    } 
+
+    else if (currentFragments !== undefined && currentFragments.length >= 4 && !trigger){
+      return (
+        <View>
+            <Text/>
+            <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
+            <Text/>
+            <Text style={styles.getStartedText}>Vote on which user-submitted words should be added to the story! {'\n'}{'\n'}Here are the options: </Text>
+            <Text/>
+            {currentFragments.map(fragment => 
+              <View key={fragment.id}>
+                <Button type="button" title={'"' + fragment.words + '"' + '\n \n Votes: ' + fragment.votes} onPress={() => this.handleVoteClick(fragment.id)}
+                />
+                <Text/>
+              </View>
+            )}
+        </View>
+      )
+    }
+
+    else if (currentFragments !== undefined && currentFragments.length < 4 && !trigger){
+      return (
+        <View>
+            <Text/>
+            <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
+            <Text/>
+            <Text style={styles.getStartedText}>Please submit a proposal for the next part of the story! 
+            {'\n'}{'\n'}Voting will begin once we have received four submissions.{'\n'}</Text>
+
+            <Text style={styles.getStartedText}>Submit a Proposal: </Text>
+            
+            <TextInput style={{height: 40, borderColor: 'gray', borderWidth: 1}} maxLength={40}
+            onChangeText={(submission) => this.setState({submission})} value={this.state.submission}/>
+            
+            <Button type="button" title={'Submit'} onPress={this.handleProposalSubmission}/>
+
+            <Text style={styles.getStartedText}>{'\n'}Here are the proposals submitted so far:{'\n'}</Text>
+
+            {currentFragments.map(fragment => 
+              <View key={fragment.id}>
+                <Button type="button" title={fragment.words + '\n \n Votes: ' + fragment.votes}/>
+                <Text/>
+              </View>
+            )}
+        </View>
+      )
+    }
+
+    else {
+      return (<Text>Loading...</Text>)
     }
   }
 }
@@ -96,7 +171,8 @@ const mapDispatchToProps = dispatch => {
     loadCurrentStory: () => dispatch(getCurrentStory()),
     loadCurrentFragments: () => dispatch(getCurrentFragments()),
     addVote: (id) => dispatch(addVote(id)),
-    submitProposal: (submission) => dispatch(submitProposal(submission)) 
+    submitProposal: (submission) => dispatch(submitProposal(submission)),
+    completeVote: (id) => dispatch(completeVote(id))
   }
 }
 

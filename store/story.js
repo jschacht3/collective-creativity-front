@@ -4,6 +4,8 @@ export const SET_CURRENT_STORY = 'SET_CURRENT_STORY'
 export const SET_CURRENT_FRAGMENTS = 'SET_CURRENT_FRAGMENTS'
 export const ADD_VOTE = 'ADD_VOTE'
 export const SUBMIT_PROPOSAL = 'SUBMIT_PROPOSAL'
+export const COMPLETED_VOTE = 'COMPLETE_VOTE'
+
 
 let initialState = {
   currentStory: {},
@@ -38,6 +40,20 @@ export const submittedProposal = fragment => {
   }
 }
 
+export const setNewStory = story => {
+  return {
+    type: SET_NEW_STORY,
+    story
+  }
+}
+
+export const completedVote = fragment => {
+  return {
+    type: COMPLETE_VOTE,
+    fragment
+  }
+}
+
 export const getCurrentStory = () => async dispatch => {
   try {
     const {data} = await axios.get(`http://192.168.1.158:8080/api/story/current`)
@@ -67,7 +83,16 @@ export const addVote = (id) => async dispatch => {
 
 export const submitProposal = (submission) => async dispatch => {
   try {
-    const {data} = await axios.post(`http://192.168.1.158:8080/current/fragment/new/`, submission)
+    const {data} = await axios.post(`http://192.168.1.158:8080/api/story/current/fragment/new`, submission)
+    dispatch(submittedProposal(data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const completeVote = (id) => async dispatch => {
+  try {
+    const {data} = await axios.put(`http://192.168.1.158:8080/api/story/current/vote/complete/${id}`)
     dispatch(submittedProposal(data))
   } catch (err) {
     console.error(err)
@@ -98,6 +123,11 @@ const storyReducer = (state = initialState, action) => {
       return {
         ...state,
         currentFragments: [state.currentFragments, ...action.fragment]
+      }
+    case COMPLETED_VOTE:
+      return {
+        ...state,
+        currentFragments: []
       }
     default:
       return state
