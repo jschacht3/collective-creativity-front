@@ -52,7 +52,6 @@ export default class LinksView extends React.Component {
   }
 
   _handlePressVote = () => {
-    console.log("HANDLING VOTE")
     return (
       <Vote/>
     )

@@ -17,6 +17,8 @@ export default class HomeScreen extends React.Component {
     header: null,
   };
 
+  component
+
   render() {
     return (
       <View style={styles.container}>

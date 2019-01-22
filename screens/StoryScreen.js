@@ -9,10 +9,11 @@ import {
   View,
 } from 'react-native';
 import { WebBrowser } from 'expo';
+import Story from '../components/Story'
 
 import { MonoText } from '../components/StyledText';
 
-export default class ProfileScreen extends React.Component {
+export default class StoryScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
@@ -21,21 +22,9 @@ export default class ProfileScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
+            <View style={styles.container}>
+              <Story/>
           </View>
-
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>Please vote for the note that should be next!</Text>
-          </View>
-
         </ScrollView>
       </View>
     );
@@ -48,6 +37,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    marginBottom: 10,
+    marginRight: 10,
+    marginLeft: 10
   },
   developmentModeText: {
     marginBottom: 20,

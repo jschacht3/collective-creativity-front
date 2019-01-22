@@ -22,10 +22,8 @@ export default class VoteScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-            <View style={styles.getStartedContainer}>
-            {/* <Text style={styles.getStartedText}> */}
+            <View style={styles.container}>
               <Vote/>
-            {/* </Text> */}
           </View>
 
         </ScrollView>
@@ -40,6 +38,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    marginBottom: 10,
+    marginRight: 10,
+    marginLeft: 10
   },
   developmentModeText: {
     marginBottom: 20,

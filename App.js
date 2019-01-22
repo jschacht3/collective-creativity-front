@@ -6,7 +6,6 @@ import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom'
 import store from './store'
 
-
 // establishes socket connection
 import './socket'
 

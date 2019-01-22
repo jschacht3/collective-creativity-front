@@ -1,49 +1,37 @@
 import React from 'react'
 import { Icon } from 'expo'
-import {getCurrentStory, getCurrentFragments, addVote} from '../store/story'
+import {getCurrentStory, getCurrentFragments} from '../store/story'
 import {Image, Platform, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View} from 'react-native'
 import Colors from '../constants/Colors'
 import {connect} from 'react-redux'
 import {Button, Card, Header} from 'react-native-elements'
 
-class Vote extends React.Component {
-
-  constructor() {
-    super()
-    this.handleClick = this.handleClick.bind(this)
-  }
+class Story extends React.Component {
 
   async componentDidMount () {
     this.props.loadCurrentStory()
     this.props.loadCurrentFragments()
   }
 
-  handleClick (id) {
-    console.log("AM I HERE")
-    this.props.addVote(id)
-  }
-
   render() {
  
     const currentStory = this.props.currentStory
-    const currentFragments = this.props.currentFragments
 
-    return (
-      <View>
-          <Text/>
-          <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
-          <Text/>
-          <Text style={styles.getStartedText}>Please vote on the next part of the story! {'\n'}{'\n'}Here are the options: </Text>
-          <Text/>
-          {currentFragments.map(fragment => 
-            <View key={fragment.id}>
-              <Button type="button" title={fragment.words + '\n \n Votes: ' + fragment.votes} onPress={() => this.handleClick(fragment.id)}
-              />
-              <Text/>
-            </View>
-          )}
-      </View>
-    )
+    if (currentStory && currentStory.content){
+      return (
+        <View>
+            <Text/> 
+            <Text style={styles.getStartedText}>Below if the story so far! {'\n' + '\n'}As the voting continues, the winning vote getters will be added! </Text>
+            <Text/>
+            <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
+            <Text/>
+            <Text style={styles.getStartedText}>{currentStory.content.join(' ')} </Text>
+            <Text/>
+        </View>
+      )
+    } else {
+      return (<Text>Loading...</Text>)
+    } 
   }
 }
 
@@ -57,8 +45,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loadCurrentStory: () => dispatch(getCurrentStory()),
-    loadCurrentFragments: () => dispatch(getCurrentFragments()),
-    addVote: (id) => dispatch(addVote(id))
+    loadCurrentFragments: () => dispatch(getCurrentFragments())
   }
 }
 
@@ -153,4 +140,5 @@ const styles = StyleSheet.create({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Vote)
+export default connect(mapStateToProps, mapDispatchToProps)(Story)
+
