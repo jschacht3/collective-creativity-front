@@ -1,7 +1,7 @@
 import React from 'react'
 import { Icon } from 'expo'
-import {getCurrentStory, getCurrentFragments, addVote} from '../store/story'
-import {Image, Platform, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View} from 'react-native'
+import {getCurrentStory, getCurrentFragments, addVote, submitProposal} from '../store/story'
+import {Image, Platform, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View, TextInput} from 'react-native'
 import Colors from '../constants/Colors'
 import {connect} from 'react-redux'
 import {Button, Card, Header} from 'react-native-elements'
@@ -10,7 +10,11 @@ class Vote extends React.Component {
 
   constructor() {
     super()
-    this.handleClick = this.handleClick.bind(this)
+    this.state = {
+      submission: ''
+    }
+    this.handleVoteClick = this.handleVoteClick.bind(this)
+    this.handleProposalClick = this.handleProposalClick.bind(this)
   }
 
   async componentDidMount () {
@@ -18,9 +22,15 @@ class Vote extends React.Component {
     this.props.loadCurrentFragments()
   }
 
-  handleClick (id) {
-    console.log("AM I HERE")
+  async handleVoteClick (id) {
     this.props.addVote(id)
+  }
+
+  handleProposalSubmission () {
+    this.props.submitProposal(this.state.submission)
+    this.setState({
+      submission: ''
+    })
   }
 
   render() {
@@ -28,22 +38,49 @@ class Vote extends React.Component {
     const currentStory = this.props.currentStory
     const currentFragments = this.props.currentFragments
 
-    return (
-      <View>
-          <Text/>
-          <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
-          <Text/>
-          <Text style={styles.getStartedText}>Please vote on the next part of the story! {'\n'}{'\n'}Here are the options: </Text>
-          <Text/>
-          {currentFragments.map(fragment => 
-            <View key={fragment.id}>
-              <Button type="button" title={fragment.words + '\n \n Votes: ' + fragment.votes} onPress={() => this.handleClick(fragment.id)}
-              />
-              <Text/>
-            </View>
-          )}
-      </View>
-    )
+    if (currentFragments & currentFragments.length >= 10){
+      return (
+        <View>
+            <Text/>
+            <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
+            <Text/>
+            <Text style={styles.getStartedText}>Please vote on the next part of the story! {'\n'}{'\n'}Here are the options: </Text>
+            <Text/>
+            {currentFragments.map(fragment => 
+              <View key={fragment.id}>
+                <Button type="button" title={fragment.words + '\n \n Votes: ' + fragment.votes} onPress={() => this.handleVoteClick(fragment.id)}
+                />
+                <Text/>
+              </View>
+            )}
+        </View>
+      )
+    }
+    else {
+      return (
+        <View>
+            <Text/>
+            <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
+            <Text/>
+            <Text style={styles.getStartedText}>Please submit a proposal for the next part of the story! 
+              Voting will begin once we have received four submissions{'\n'}</Text>
+
+            <Text style={styles.getStartedText}>Submit a Proposal: </Text>
+            <TextInput style={{height: 40, borderColor: 'gray', borderWidth: 1}} maxLength={40}
+            onChangeText={(text) => this.setState({text})} value={this.state.text}/>
+            <Button type="button" title={'Submit'} onPress={this.handleProposalSubmission}/>
+
+            <Text style={styles.getStartedText}>{'\n'}Here are the proposals submitted so far:{'\n'}</Text>
+
+            {currentFragments.map(fragment => 
+              <View key={fragment.id}>
+                <Button type="button" title={fragment.words + '\n \n Votes: ' + fragment.votes}/>
+                <Text/>
+              </View>
+            )}
+        </View>
+      )
+    }
   }
 }
 
@@ -58,7 +95,8 @@ const mapDispatchToProps = dispatch => {
   return {
     loadCurrentStory: () => dispatch(getCurrentStory()),
     loadCurrentFragments: () => dispatch(getCurrentFragments()),
-    addVote: (id) => dispatch(addVote(id))
+    addVote: (id) => dispatch(addVote(id)),
+    submitProposal: (submission) => dispatch(submitProposal(submission)) 
   }
 }
 
