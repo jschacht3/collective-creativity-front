@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 import React from 'react'
 import { Icon } from 'expo'
-import {getCurrentStory, getCurrentFragments, addVote, submitProposal, completeVote} from '../store/story'
+import {getCurrentStory, getCurrentFragments, addVote, submitProposal, completeVote, getStoryContent} from '../store/story'
 import {Image, Platform, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View, TextInput} from 'react-native'
 import Colors from '../constants/Colors'
 import {connect} from 'react-redux'
@@ -22,13 +22,14 @@ class Vote extends React.Component {
   async componentDidMount () {
     await this.props.loadCurrentFragments()
     await this.props.loadCurrentStory()
+    await this.props.loadStoryContent()
   }
 
-  async componentDidUpdate(prevProps) {
-    if (this.props.currentFragments.length !== prevProps.currentFragments.length) {
-      this.props.loadCurrentFragments()
-    }
-  }
+  // async componentDidUpdate(prevProps) {
+  //   if (this.props.currentFragments.length !== prevProps.currentFragments.length) {
+  //     this.props.loadCurrentFragments()
+  //   }
+  // }
 
   async handleVoteClick (id) {
     await this.props.addVote(id)
@@ -40,18 +41,22 @@ class Vote extends React.Component {
       submission: ''
     })
     await this.props.loadCurrentFragments()
+    await this.props.loadCurrentStory()
   }
 
   async voteWinner (id) {
     await this.props.completeVote(id)
     await this.props.loadCurrentFragments()
     await this.props.loadCurrentStory()
+    await this.props.loadStoryContent()
   }
 
   render() {
  
     const currentStory = this.props.currentStory
     const currentFragments = this.props.currentFragments
+
+    console.log("CURRENT STORY", currentStory.title)
 
     let trigger = false
     let voteLeader
@@ -85,6 +90,7 @@ class Vote extends React.Component {
             <Text style={styles.getStartedText}>It's time to start a new story!</Text>
             <Text/>
             <Text style={styles.getStartedText}>Submit a proposal for what the title should be! 
+            {'\n'}{'\n'}Click on the story tab below to see the current content of the story.
             {'\n'}{'\n'}Voting will begin once we have received four submissions.{'\n'}</Text>
 
             <Text style={styles.getStartedText}>Submit a Proposal: </Text>
@@ -106,7 +112,7 @@ class Vote extends React.Component {
       )
     } 
 
-    else if (currentFragments !== undefined && currentFragments.length >= 4 && !trigger){
+    else if (currentFragments !== undefined && currentStory !== undefined && currentFragments.length >= 4 && !trigger){
       return (
         <View>
             <Text/>
@@ -125,7 +131,7 @@ class Vote extends React.Component {
       )
     }
 
-    else if (currentFragments !== undefined && currentFragments.length < 4 && !trigger){
+    else if (currentFragments !== undefined && currentStory !== undefined && currentFragments.length < 4 && !trigger){
       return (
         <View>
             <Text/>
@@ -162,7 +168,8 @@ class Vote extends React.Component {
 const mapStateToProps = state => {
   return {
     currentStory: state.currentStory,
-    currentFragments: state.currentFragments
+    currentFragments: state.currentFragments,
+    currentStoryContent: state.currentStoryContent
   }
 }
 
@@ -172,7 +179,8 @@ const mapDispatchToProps = dispatch => {
     loadCurrentFragments: () => dispatch(getCurrentFragments()),
     addVote: (id) => dispatch(addVote(id)),
     submitProposal: (submission) => dispatch(submitProposal(submission)),
-    completeVote: (id) => dispatch(completeVote(id))
+    completeVote: (id) => dispatch(completeVote(id)),
+    loadStoryContent: () => dispatch(getStoryContent())
   }
 }
 

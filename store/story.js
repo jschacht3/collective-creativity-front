@@ -5,11 +5,12 @@ export const SET_CURRENT_FRAGMENTS = 'SET_CURRENT_FRAGMENTS'
 export const ADD_VOTE = 'ADD_VOTE'
 export const SUBMIT_PROPOSAL = 'SUBMIT_PROPOSAL'
 export const COMPLETED_VOTE = 'COMPLETE_VOTE'
-
+export const SET_STORY_CONTENT = 'SET_STORY_CONTENT'
 
 let initialState = {
   currentStory: {},
-  currentFragments: []
+  currentFragments: [],
+  currentStoryContent: []
 }
 
 export const setCurrentStory = story => {
@@ -53,6 +54,14 @@ export const completedVote = fragment => {
     fragment
   }
 }
+
+export const setStoryContent = fragments => {
+  return {
+    type: SET_STORY_CONTENT,
+    fragments
+  }
+}
+
 
 export const getCurrentStory = () => async dispatch => {
   try {
@@ -99,6 +108,15 @@ export const completeVote = (id) => async dispatch => {
   }
 }
 
+export const getStoryContent = () => async dispatch => {
+  try {
+    const {data} = await axios.get(`http://192.168.1.158:8080/api/story/content`)
+    dispatch(setStoryContent(data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 const storyReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_CURRENT_STORY:
@@ -128,6 +146,11 @@ const storyReducer = (state = initialState, action) => {
       return {
         ...state,
         currentFragments: []
+      }
+    case SET_STORY_CONTENT:
+      return {
+        ...state,
+        currentStoryContent: action.fragments
       }
     default:
       return state

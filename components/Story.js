@@ -1,6 +1,6 @@
 import React from 'react'
 import { Icon } from 'expo'
-import {getCurrentStory, getCurrentFragments} from '../store/story'
+import {getCurrentStory, getCurrentFragments, getStoryContent} from '../store/story'
 import {Image, Platform, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View} from 'react-native'
 import Colors from '../constants/Colors'
 import {connect} from 'react-redux'
@@ -9,23 +9,36 @@ import {Button, Card, Header} from 'react-native-elements'
 class Story extends React.Component {
 
   async componentDidMount () {
-    this.props.loadCurrentStory()
-    this.props.loadCurrentFragments()
+    await this.props.loadCurrentStory()
+    await this.props.loadCurrentFragments()
+    await this.props.loadStoryContent()
+  }
+
+  async componentDidUpdate(prevProps) {
+    if (this.props.currentStoryContent.length !== prevProps.currentStoryContent.length) {
+      currentStoryContent = this.props.currentStoryContent
+    }
   }
 
   render() {
  
     const currentStory = this.props.currentStory
+    const currentStoryContent = this.props.currentStoryContent
 
-    if (currentStory && currentStory.content){
+
+    if (currentStory !== undefined && currentStoryContent !== undefined){
+      let content = '';
+      for (let i = 1; i < currentStoryContent.length; i++){
+        content += currentStoryContent[i].words + "  "
+      }
       return (
         <View>
             <Text/> 
-            <Text style={styles.getStartedText}>Below if the story so far! {'\n' + '\n'}As the voting continues, the winning vote getters will be added! </Text>
+            <Text style={styles.getStartedText}>Below is the story so far! {'\n' + '\n'}As the voting continues, the proposed additions with the most votes will get added to the story! </Text>
             <Text/>
             <Text style={styles.getStartedText}>Story Title: {currentStory.title}</Text>
             <Text/>
-            <Text style={styles.getStartedText}>{currentStory.content.join(' ')} </Text>
+            <Text style={styles.getStartedText}>{content} </Text>
             <Text/>
         </View>
       )
@@ -36,16 +49,19 @@ class Story extends React.Component {
 }
 
 const mapStateToProps = state => {
+  console.log("I AM STATE STORY, ", state)
   return {
     currentStory: state.currentStory,
-    currentFragments: state.currentFragments
+    currentFragments: state.currentFragments,
+    currentStoryContent: state.currentStoryContent
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     loadCurrentStory: () => dispatch(getCurrentStory()),
-    loadCurrentFragments: () => dispatch(getCurrentFragments())
+    loadCurrentFragments: () => dispatch(getCurrentFragments()),
+    loadStoryContent: () => dispatch(getStoryContent())
   }
 }
 
