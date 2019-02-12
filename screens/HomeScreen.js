@@ -40,7 +40,7 @@ export default class HomeScreen extends React.Component {
               </View>
               <View>
               <Text style={styles.getStartedText}>
-                  Click on 'STORY' below to see the story so far... 
+                  Click on 'Story' below to see the story so far... 
               </Text>
             </View>
           </View>
@@ -57,8 +57,8 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,1)',
-    marginTop: 30
-  },
+    marginTop: 50
+  }, 
   developmentModeText: {
     marginBottom: 20,
     color: 'rgba(0,0,0,0.4)',

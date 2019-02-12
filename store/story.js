@@ -65,7 +65,7 @@ export const setStoryContent = fragments => {
 
 export const getCurrentStory = () => async dispatch => {
   try {
-    const {data} = await axios.get(`http://172.16.21.13:8080/api/story/current`)
+    const {data} = await axios.get(`http://192.168.1.158:8080/api/story/current`)
     dispatch(setCurrentStory(data))
   } catch (err) {
     console.error(err)
@@ -74,7 +74,7 @@ export const getCurrentStory = () => async dispatch => {
 
 export const getCurrentFragments = () => async dispatch => {
   try {
-    const {data} = await axios.get(`http://172.16.21.13:8080/api/story/current/fragments`)
+    const {data} = await axios.get(`http://192.168.1.158:8080/api/story/current/fragments`)
     dispatch(setCurrentFragments(data))
   } catch (err) {
     console.error(err)
@@ -83,7 +83,7 @@ export const getCurrentFragments = () => async dispatch => {
 
 export const addVote = (id) => async dispatch => {
   try {
-    const {data} = await axios.put(`http://172.16.21.13:8080/api/story/current/fragment/${id}`)
+    const {data} = await axios.put(`http://192.168.1.158:8080/api/story/current/fragment/${id}`)
     dispatch(updatedVote(data))
   } catch (err) {
     console.error(err)
@@ -92,7 +92,7 @@ export const addVote = (id) => async dispatch => {
 
 export const submitProposal = (submission) => async dispatch => {
   try {
-    const {data} = await axios.post(`http://172.16.21.13:8080/api/story/current/fragment/new`, submission)
+    const {data} = await axios.post(`http://192.168.1.158:8080/api/story/current/fragment/new`, submission)
     dispatch(submittedProposal(data))
   } catch (err) {
     console.error(err)
@@ -101,7 +101,7 @@ export const submitProposal = (submission) => async dispatch => {
 
 export const completeVote = (id) => async dispatch => {
   try {
-    const {data} = await axios.put(`http://172.16.21.13:8080/api/story/current/vote/complete/${id}`)
+    const {data} = await axios.put(`http://192.168.1.158:8080/api/story/current/vote/complete/${id}`)
     dispatch(submittedProposal(data))
   } catch (err) {
     console.error(err)
@@ -110,7 +110,7 @@ export const completeVote = (id) => async dispatch => {
 
 export const getStoryContent = () => async dispatch => {
   try {
-    const {data} = await axios.get(`http://172.16.21.13:8080/api/story/content`)
+    const {data} = await axios.get(`http://192.168.1.158:8080/api/story/content`)
     dispatch(setStoryContent(data))
   } catch (err) {
     console.error(err)
