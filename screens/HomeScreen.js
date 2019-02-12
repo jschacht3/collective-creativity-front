@@ -1,10 +1,11 @@
-import React from 'react';
+import React from 'react'
 import {
   ScrollView,
-  StyleSheet,
   Text,
   View,
-} from 'react-native';
+} from 'react-native'
+import styles from '../public/styles'
+
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -13,27 +14,27 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <View style={styles.homeScreenContainer}>
+        <ScrollView style={styles.homeScreenContainer} contentContainerStyle={styles.homeScreenContentContainer}>
 
-          <View style={styles.welcomeContainer}>
-              <View style={styles.welcomeContainer}>
-                <Text style={styles.getStartedHeader}>
+          <View style={styles.homeScreenWelcomeContainer}>
+              <View style={styles.homeScreenWelcomeContainer}>
+                <Text style={styles.homeScreenGetStartedHeader}>
                     Welcome to Collective Creativity! {'\n'}  
                 </Text>
               </View>
               <View>
-                <Text style={styles.getStartedText}>
+                <Text style={styles.homeScreenGetStartedText}>
                     Collective Creativity is a tool for writing a story together...with democracy!{'\n'}
                 </Text>
               </View>
               <View>
-                <Text style={styles.getStartedText}>
+                <Text style={styles.homeScreenGetStartedText}>
                     Click on 'Vote' below to start voting. {'\n'}
                 </Text>
               </View>
               <View>
-              <Text style={styles.getStartedText}>
+              <Text style={styles.homeScreenGetStartedText}>
                   Click on 'Story' below to see the story so far... 
               </Text>
             </View>
@@ -45,36 +46,3 @@ export default class HomeScreen extends React.Component {
   }
 }
 
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,1)',
-    marginTop: 50
-  }, 
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-    marginRight: 10, 
-    marginLeft: 10
-  },
-  getStartedHeader: {
-    fontSize: 25,
-    color: 'rgba(248,248,248,1)',
-    lineHeight: 24,
-    textAlign: 'center',
-    marginLeft: 10,
-    marginRight: 10
-  },
-  getStartedText: {
-    fontSize: 20,
-    color: 'rgba(248,248,248,1)',
-    lineHeight: 24,
-    textAlign: 'center',
-    marginLeft: 10,
-    marginRight: 10
-  }
-});

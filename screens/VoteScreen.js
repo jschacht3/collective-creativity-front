@@ -1,9 +1,9 @@
-import React from 'react';
+import React from 'react'
 import {
   ScrollView,
-  StyleSheet,
   View,
-} from 'react-native';
+} from 'react-native'
+import styles from '../public/styles'
 import Vote from '../components/Vote'
 
 export default class VoteScreen extends React.Component {
@@ -13,27 +13,13 @@ export default class VoteScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-            <View style={styles.container}>
+      <View style={styles.voteScreenContainer}>
+        <ScrollView style={styles.voteScreenContainer} contentContainerStyle={styles.voteScreenContentContainer}>
+            <View style={styles.voteScreenContainer}>
               <Vote/>
           </View>
-
         </ScrollView>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    marginBottom: 10,
-    marginRight: 10,
-    marginLeft: 10
-  },
-  contentContainer: {
-    paddingTop: 30,
-  }
-});

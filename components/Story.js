@@ -1,10 +1,8 @@
 import React from 'react'
-import { Icon } from 'expo'
 import {getCurrentStory, getCurrentFragments, getStoryContent} from '../store/story'
-import {Image, Platform, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View} from 'react-native'
-import Colors from '../constants/Colors'
+import {Text, View} from 'react-native'
 import {connect} from 'react-redux'
-import {Button, Card, Header} from 'react-native-elements'
+import styles from '../public/styles'
 
 class Story extends React.Component {
 
@@ -34,14 +32,14 @@ class Story extends React.Component {
       return (
         <View>
             <Text/> 
-            <Text style={styles.header}>Below is the story so far!</Text>
+            <Text style={styles.storyHeader}>The story so far...</Text>
             <Text/> 
-            <Text style={styles.body}>As the voting continues, the proposed additions with the most votes will get added to the story! </Text>
+            <Text style={styles.storyBody}>As the voting continues, the proposed additions with the most votes will get added to the story! </Text>
             <Text/>
             <Text/>
-            <Text style={styles.header}>{currentStory.title}</Text>
+            <Text style={styles.storyHeader}>{currentStory.title}</Text>
             <Text/>
-            <Text style={styles.body}>{content} </Text>
+            <Text style={styles.storyBody}>{content} </Text>
             <Text/>
         </View>
       )
@@ -66,22 +64,6 @@ const mapDispatchToProps = dispatch => {
     loadStoryContent: () => dispatch(getStoryContent())
   }
 }
-
-const styles = StyleSheet.create({
-  getStartedText: {
-    fontSize: 20,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'left',
-  },
-  header: {
-    fontSize: 30,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 34,
-    textAlign: 'left',
-  }
-});
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Story)
 

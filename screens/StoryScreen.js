@@ -1,10 +1,10 @@
 import React from 'react';
 import {
   ScrollView,
-  StyleSheet,
-  View,
+  View
 } from 'react-native';
 import Story from '../components/Story'
+import styles from '../public/styles'
 
 export default class StoryScreen extends React.Component {
   static navigationOptions = {
@@ -13,26 +13,13 @@ export default class StoryScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-            <View style={styles.container}>
+      <View style={styles.storyScreenContainer}>
+        <ScrollView style={styles.storyScreenContainer} contentContainerStyle={styles.storyScreenContentContainer}>
+            <View style={styles.storyScrenContainer}>
               <Story/>
-          </View>
+            </View>
         </ScrollView>
       </View>
     );
   } 
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    marginBottom: 10,
-    marginRight: 10,
-    marginLeft: 10
-  },
-  contentContainer: {
-    paddingTop: 30,
-  }
-});

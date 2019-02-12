@@ -1,11 +1,10 @@
 /* eslint-disable complexity */
 import React from 'react'
-import { Icon } from 'expo'
 import {getCurrentStory, getCurrentFragments, addVote, submitProposal, completeVote, getStoryContent} from '../store/story'
-import {Image, Platform, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View, TextInput} from 'react-native'
-import Colors from '../constants/Colors'
+import {Text, View, TextInput} from 'react-native'
 import {connect} from 'react-redux'
-import {Button, Card, Header} from 'react-native-elements'
+import {Button} from 'react-native-elements'
+import styles from '../public/styles'
 
 class Vote extends React.Component {
 
@@ -24,12 +23,6 @@ class Vote extends React.Component {
     await this.props.loadCurrentStory()
     await this.props.loadStoryContent()
   }
-
-  // async componentDidUpdate(prevProps) {
-  //   if (this.props.currentFragments.length !== prevProps.currentFragments.length) {
-  //     this.props.loadCurrentFragments()
-  //   }
-  // }
 
   async handleVoteClick (id) {
     await this.props.addVote(id)
@@ -70,7 +63,7 @@ class Vote extends React.Component {
       return (
         <View>
             <Text/>
-            <Text style={styles.getStartedText}>Vote on what the story's title should be! {'\n'}{'\n'}Here are the user submitted proposals: </Text>
+            <Text style={styles.voteBody}>Vote on what the story's title should be! {'\n'}{'\n'}Here are the user submitted proposals: </Text>
             <Text/>
             {currentFragments.map(fragment => 
               <View key={fragment.id}>
@@ -84,20 +77,20 @@ class Vote extends React.Component {
       return (
         <View>
             <Text/>
-            <Text style={styles.getStartedText}>It's time to start a new story!</Text>
+            <Text style={styles.voteBody}>It's time to start a new story!</Text>
             <Text/>
-            <Text style={styles.getStartedText}>Submit a proposal for what the title should be! 
+            <Text style={styles.voteBody}>Submit a proposal for what the title should be! 
             {'\n'}{'\n'}Click on the story tab below to see the current content of the story.
             {'\n'}{'\n'}Voting will begin once we have received four submissions.{'\n'}</Text>
 
-            <Text style={styles.getStartedText}>Submit a Proposal: </Text>
+            <Text style={styles.voteBody}>Submit a Proposal: </Text>
             
             <TextInput style={{height: 40, borderColor: 'gray', borderWidth: 1}} maxLength={40}
             onChangeText={(submission) => this.setState({submission})} value={this.state.submission}/>
             
             <Button type="button" title={'Submit'} onPress={this.handleProposalSubmission}/>
 
-            <Text style={styles.getStartedText}>{'\n'}Here are the proposals submitted so far:{'\n'}</Text>
+            <Text style={styles.voteBody}>{'\n'}Here are the proposals submitted so far:{'\n'}</Text>
 
             {currentFragments.map(fragment => 
               <View key={fragment.id}>
@@ -113,9 +106,9 @@ class Vote extends React.Component {
       return (
         <View>
             <Text/>
-            <Text style={styles.getStartedHeader}>Story Title: {currentStory.title}</Text>
+            <Text style={styles.voteHeader}>Story Title: {currentStory.title}</Text>
             <Text/>
-            <Text style={styles.getStartedText}>Vote on which user-submitted words should be added to the story! {'\n'}{'\n'}Here are the options: </Text>
+            <Text style={styles.voteBody}>Vote on which user-submitted words should be added to the story! {'\n'}{'\n'}Here are the options: </Text>
             <Text/>
             {currentFragments.map(fragment => 
               <View key={fragment.id}>
@@ -132,19 +125,19 @@ class Vote extends React.Component {
       return (
         <View>
             <Text/>
-            <Text style={styles.getStartedHeader}>Story Title: {currentStory.title}</Text>
+            <Text style={styles.voteHeader}>Story Title: {currentStory.title}</Text>
             <Text/>
-            <Text style={styles.getStartedText}>Please submit a proposal for the next part of the story! 
+            <Text style={styles.voteBody}>Please submit a proposal for the next part of the story! 
             {'\n'}{'\n'}Voting will begin once we have received four submissions.{'\n'}</Text>
 
-            <Text style={styles.getStartedText}>Submit a Proposal: </Text>
+            <Text style={styles.voteBody}>Submit a Proposal: </Text>
             
             <TextInput style={{height: 40, borderColor: 'gray', borderWidth: 1}} maxLength={40}
             onChangeText={(submission) => this.setState({submission})} value={this.state.submission}/>
             
             <Button type="button" title={'Submit'} onPress={this.handleProposalSubmission}/>
 
-            <Text style={styles.getStartedText}>{'\n'}Here are the proposals submitted so far:{'\n'}</Text>
+            <Text style={styles.voteBody}>{'\n'}Here are the proposals submitted so far:{'\n'}</Text>
 
             {currentFragments.map(fragment => 
               <View key={fragment.id}>
@@ -180,21 +173,5 @@ const mapDispatchToProps = dispatch => {
     loadStoryContent: () => dispatch(getStoryContent())
   }
 }
-
-const styles = StyleSheet.create({
-  getStartedText: {
-    fontSize: 20,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'left',
-  },
-  getStartedHeader: {
-    fontSize: 30,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 34,
-    textAlign: 'left',
-  }
-});
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Vote)
