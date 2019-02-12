@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, Image, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { WebBrowser } from 'expo';
-import { Ionicons } from '@expo/vector-icons';
 import Touchable from 'react-native-platform-touchable';
 import Vote from './Vote'
 
@@ -63,10 +62,6 @@ export default class LinksView extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-  },
   optionsTitleText: {
     fontSize: 16,
     marginLeft: 15,
