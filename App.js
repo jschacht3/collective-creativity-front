@@ -3,7 +3,6 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
 import store from './store'
 
 // establishes socket connection

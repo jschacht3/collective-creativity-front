@@ -23,7 +23,6 @@ class Story extends React.Component {
     const currentStory = this.props.currentStory
     const currentStoryContent = this.props.currentStoryContent
 
-
     if (currentStory !== undefined && currentStoryContent !== undefined){
       let content = '';
       for (let i = 1; i < currentStoryContent.length; i++){

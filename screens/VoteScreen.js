@@ -4,7 +4,7 @@ import {
   View,
 } from 'react-native'
 import styles from '../public/styles'
-import Vote from '../components/Vote'
+import VoteMain from '../components/VoteMain'
 
 export default class VoteScreen extends React.Component {
   static navigationOptions = {
@@ -16,8 +16,8 @@ export default class VoteScreen extends React.Component {
       <View style={styles.voteScreenContainer}>
         <ScrollView style={styles.voteScreenContainer} contentContainerStyle={styles.voteScreenContentContainer}>
             <View style={styles.voteScreenContainer}>
-              <Vote/>
-          </View>
+              <VoteMain/>
+            </View>
         </ScrollView>
       </View>
     );
